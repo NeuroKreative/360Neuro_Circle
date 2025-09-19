@@ -1,7 +1,7 @@
 import streamlit as st
 from circle_api import get_auth_token, fetch_posts
-from app.chat_model import generate_response
-from app.utils import format_posts
+from chat_model import generate_response
+from utils import format_posts
 
 st.title("Circle Copilot Chat")
 

@@ -1,9 +1,9 @@
-from openai import OpenAI
 import streamlit as st
-
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+from openai import OpenAI
 
 def generate_response(prompt, context):
+    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
     messages = [
         {"role": "system", "content": "You are a helpful assistant for Circle community content."},
         {"role": "user", "content": f"{prompt}\n\nContext:\n{context}"}

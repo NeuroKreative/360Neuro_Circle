@@ -1,18 +1,18 @@
 import streamlit as st
+import subprocess
 from circle_scraper import scrape_circle
 from chat_model import generate_response
-import subprocess
 
-# Ensure Playwright browsers are installed
+# --- Ensure Playwright browsers are installed ---
 try:
     subprocess.run(["playwright", "install"], check=True)
 except Exception as e:
     print(f"Playwright install failed: {e}")
 
+# --- Streamlit UI ---
 st.set_page_config(page_title="Circle Copilot", layout="centered")
 st.title("🔐 Circle Copilot Chat")
 
-# --- Login UI ---
 with st.form("login_form"):
     email = st.text_input("Circle Email", key="email_input")
     password = st.text_input("Circle Password", type="password", key="password_input")
@@ -25,7 +25,7 @@ if submitted and email and password and query:
         try:
             raw_html = scrape_circle(email, password)
 
-            # Placeholder: Extract text from HTML (you'll expand this)
+            # Placeholder: Extract text from HTML (you’ll expand this later)
             context = raw_html[:3000]  # Limit to avoid token overflow
 
             response = generate_response(query, context)
@@ -34,4 +34,3 @@ if submitted and email and password and query:
 
         except Exception as e:
             st.error(f"❌ Something went wrong:\n{e}")
-

@@ -1,5 +1,5 @@
 import streamlit as st
-from circle_api import fetch_posts
+from circle_api import fetch_token, fetch_posts
 from chat_model import generate_response
 from utils import format_posts
 

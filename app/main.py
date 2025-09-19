@@ -2,7 +2,7 @@ import streamlit as st
 from circle_api import fetch_token, fetch_posts
 from chat_model import generate_response
 from utils import format_posts
-from app.circle_scraper import scrape_circle
+from circle_scraper import scrape_circle
 
 st.title("🔐 Circle Copilot Chat")
 

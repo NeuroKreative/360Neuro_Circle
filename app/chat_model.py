@@ -13,7 +13,7 @@ def generate_response(prompt, context):
         {"role": "user", "content": f"{prompt}\n\nContext:\n{context}"}
     ]
     response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-4.1",
         messages=messages
     )
     return response.choices[0].message.content

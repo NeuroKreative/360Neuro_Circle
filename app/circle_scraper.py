@@ -1,17 +1,25 @@
-from playwright.sync_api import sync_playwright
+import requests
+from bs4 import BeautifulSoup
 
 def scrape_circle(email, password):
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        page.goto("https://www.360neurogo.com/")
-        page.fill('input[name="email"]', email)
-        page.fill('input[name="password"]', password)
-        page.click('button[type="submit"]')
-        page.wait_for_load_state('networkidle')
+    session = requests.Session()
 
-        # Example: scrape dashboard content
-        page.goto("https://www.360neurogo.com/dashboard")
-        content = page.content()
-        browser.close()
-        return content
+    # Step 1: Get login page (to grab CSRF token if needed)
+    login_page = session.get("https://www.360neurogo.com/login")
+    soup = BeautifulSoup(login_page.text, "html.parser")
+
+    # Optional: Extract CSRF token if required
+    # csrf_token = soup.find("input", {"name": "csrf_token"})["value"]
+
+    # Step 2: Submit login form
+    payload = {
+        "email": email,
+        "password": password,
+        # "csrf_token": csrf_token  # Include if needed
+    }
+    response = session.post("https://www.360neurogo.com/login", data=payload)
+
+    # Step 3: Access protected page
+    dashboard = session.get("https://www.360neurogo.com/dashboard")
+    return dashboard.text
+

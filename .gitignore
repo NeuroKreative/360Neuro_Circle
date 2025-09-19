@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+*.env
+
+# Streamlit
+.streamlit/
+*.toml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

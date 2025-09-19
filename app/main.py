@@ -2,13 +2,13 @@ import streamlit as st
 import subprocess
 from circle_scraper import scrape_circle
 from chat_model import generate_response
-
+''''
 # --- Ensure Playwright browsers are installed ---
 try:
     subprocess.run(["playwright", "install"], check=True)
 except Exception as e:
     print(f"Playwright install failed: {e}")
-
+''''
 # --- Streamlit UI ---
 st.set_page_config(page_title="Circle Copilot", layout="centered")
 st.title("🔐 Circle Copilot Chat")

@@ -2,8 +2,15 @@ import streamlit as st
 from circle_api import fetch_token, fetch_posts
 from chat_model import generate_response
 from utils import format_posts
+from app.circle_scraper import scrape_circle
 
 st.title("🔐 Circle Copilot Chat")
+
+if email and password and query:
+    raw_html = scrape_circle(email, password)
+    context = extract_text(raw_html)  # You’ll write this parser
+    response = generate_response(query, context)
+    st.write(response)
 
 # Login UI
 email = st.text_input("Circle Email")

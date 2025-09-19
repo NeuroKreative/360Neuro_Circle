@@ -7,9 +7,9 @@ from circle_scraper import scrape_circle
 st.title("🔐 Circle Copilot Chat")
 
 # Define inputs BEFORE using them
-email = st.text_input("Circle Email")
-password = st.text_input("Circle Password", type="password")
-query = st.text_input("Ask me anything about the Circle community:")
+email = st.text_input("Circle Email", key="email_input")
+password = st.text_input("Circle Password", type="password", key="password_input")
+query = st.text_input("Ask me anything about the Circle community:", key="query_input")
 
 if email and password and query:
     raw_html = scrape_circle(email, password)

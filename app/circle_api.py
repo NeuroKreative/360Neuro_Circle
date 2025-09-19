@@ -15,5 +15,17 @@ def fetch_posts(token):
     return response.json()
 
 def fetch_token(email, password):
-    response = requests.post(f"{CIRCLE_API_URL}/auth/login", json={"email": email, "password": password})
-    return response.json().get("token")
+    url = "https://app.circle.so/api/v1/auth/login"
+    payload = {"email": email, "password": password}
+    response = requests.post(url, json=payload)
+
+    # Debug output
+    print("Status Code:", response.status_code)
+    print("Headers:", response.headers)
+    print("Raw Response:", response.text[:500])  # Limit to 500 chars
+
+    try:
+        return response.json().get("token")
+    except Exception as e:
+        raise RuntimeError(f"Failed to parse JSON: {e}\nRaw response:\n{response.text[:500]}")
+

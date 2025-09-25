@@ -1,6 +1,8 @@
 import streamlit as st
 from circle_scraper import scrape_circle
 from chat_model import generate_response
+import re
+from datetime import datetime
 
 # --- Streamlit Page Configuration ---
 st.set_page_config(page_title="Circle Copilot", layout="wide")
@@ -12,6 +14,34 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "circle_data" not in st.session_state:
     st.session_state.circle_data = ""
+
+# --- Helper Functions ---
+def extract_urls(text):
+    url_pattern = r"https?://[^\s]+"
+    return re.findall(url_pattern, text)
+
+def suggest_followups(query, response):
+    return [
+        f"Can you elaborate more on '{query}'?",
+        "What are the latest updates on this topic?",
+        "Are there any related discussions in the Circle community?",
+        "Can you provide examples or case studies?",
+        "What are the expert opinions shared in the community?"
+    ]
+
+def format_message(role, content, timestamp):
+    icon = "👤" if role == "user" else "🤖"
+    return f"{icon} **{role.capitalize()}** ({timestamp}):\n\n{content}"
+
+# --- Logo and Branding ---
+st.markdown(
+    """
+    https://www.360neurogo.com
+        https://www.360neurogo.com/wp-content/uploads/2022/03/360NeuroGO-Logo.png
+    </a>
+    """,
+    unsafe_allow_html=True
+)
 
 # --- Login Interface ---
 if not st.session_state.logged_in:
@@ -35,19 +65,24 @@ if not st.session_state.logged_in:
 else:
     st.title("💬 Circle Copilot Chat")
 
+    # Clear chat button
+    if st.button("🧹 Clear Chat"):
+        st.session_state.chat_history = []
+
     # Display chat history
     for msg in st.session_state.chat_history:
+        timestamp = msg.get("timestamp", "")
+        formatted = format_message(msg["role"], msg["content"], timestamp)
         with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
+            st.markdown(formatted)
 
     # Chat input
     user_input = st.chat_input("Ask something about the Circle community...")
     if user_input:
-        # Display user message
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with st.chat_message("user"):
-            st.markdown(user_input)
+            st.markdown(format_message("user", user_input, timestamp))
 
-        # Build context and system prompt
         context = st.session_state.circle_data
         system_prompt = (
             "You are a Circle Copilot AI. You must only use information retrieved from the Circle community. "
@@ -56,15 +91,19 @@ else:
             "Provide helpful suggestions and include references to where the information was found if possible."
         )
 
-        # Generate response
         with st.spinner("Thinking..."):
             response = generate_response(user_input, context, system_prompt=system_prompt)
 
-        # Display assistant message
+        response_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with st.chat_message("assistant"):
-            st.markdown(response)
+            st.markdown(format_message("assistant", response, response_timestamp))
 
-        # Update chat history
-        st.session_state.chat_history.append({"role": "user", "content": user_input})
-        st.session_state.chat_history.append({"role": "assistant", "content": response})
+            # 🔗 References
+            urls = extract_urls(response)
+            if urls:
+                st.markdown("🔗 **References:**")
+                for url in urls:
+                    st.markdown(f"- {url}")
 
+            # 💡 Follow-up Suggestions (clickable)
+            suggestions

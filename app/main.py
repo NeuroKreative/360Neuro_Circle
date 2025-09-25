@@ -64,7 +64,7 @@ if not st.session_state.logged_in:
 
 # --- Chat Interface ---
 else:
-    st.title("💬 360Vestie")
+    st.title("🧠 360Vestie")
 
     # Clear chat button
     if st.button("🧹 Clear Chat"):

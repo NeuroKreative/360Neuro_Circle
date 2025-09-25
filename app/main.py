@@ -37,8 +37,7 @@ def format_message(role, content, timestamp):
 st.markdown(
     """
     <div style="text-align: center; margin-bottom: 20px;">
-            <img src="https://scontent-sea5-1.cdninstagram.com/v/t51.2885-19/499884850_17851448808452837_5907511648837705268_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-sea5-1.cdninstagram.com&_nc_cat=105&_nc_oc=Q6cZ2QF_WE9AMS1GyyKiRkm33GW-REn0apn3WDUWkuL3uGdmQtVVIhN9nWb1y0YuCgiUSCOhaa0dumBL6sQzd0b21yi2&_nc_ohc=aUJxnoGj04EQ7kNvwGXIB0a&_nc_gid=RRjURFE3dyNvfcWK6FfFHg&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfbryUkq67zcjAK1rMN4a1_acPUJ3FCpBRRhAvtk0WdMyQ&oe=68DBB434&_nc_sid=7a9f4b"
-        </a>
+        <img src="https://scontent-sea5-1.cdninstagram.com/v/t51.2885-19/499884850_17851448808452837_5907511648837705268_n.jpg" alt="360Vestie Logo" style="width:150px; border-radius:50%;">
     </div>
     """,
     unsafe_allow_html=True
@@ -65,6 +64,15 @@ if not st.session_state.logged_in:
 # --- Chat Interface ---
 else:
     st.title("🧠 360Vestie")
+
+    # Search box
+    st.subheader("🔍 Search Circle Content")
+    query = st.text_input("Enter a keyword or phrase to search")
+    if query:
+        results = [line for line in st.session_state.circle_data.split('\n') if query.lower() in line.lower()]
+        st.write(f"Found {len(results)} results:")
+        for r in results:
+            st.markdown(f"- {r}")
 
     # Clear chat button
     if st.button("🧹 Clear Chat"):
@@ -106,7 +114,7 @@ else:
                 for url in urls:
                     st.markdown(f"- {url}")
 
-            # 💡 Follow-up Suggestions (clickable)
+            # 💡 Follow-up Suggestions
             suggestions = suggest_followups(user_input, response)
             if suggestions:
                 st.markdown("💡 **Follow-up Suggestions:**")
@@ -126,4 +134,3 @@ else:
         # Save to history
         st.session_state.chat_history.append({"role": "user", "content": user_input, "timestamp": timestamp})
         st.session_state.chat_history.append({"role": "assistant", "content": response, "timestamp": response_timestamp})
-

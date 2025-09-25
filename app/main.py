@@ -3,6 +3,8 @@ from circle_scraper import scrape_circle
 from chat_model import generate_response
 import re
 from datetime import datetime
+import os
+print(os.listdir())  # See if chat_model.py is listed
 
 # --- Streamlit Page Configuration ---
 st.set_page_config(page_title="360Vestie", layout="wide")

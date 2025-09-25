@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 
 # --- Streamlit Page Configuration ---
-st.set_page_config(page_title="Circle Copilot", layout="wide")
+st.set_page_config(page_title="360Vestie", layout="wide")
 
 # --- Initialize Session State ---
 if "logged_in" not in st.session_state:
@@ -64,7 +64,7 @@ if not st.session_state.logged_in:
 
 # --- Chat Interface ---
 else:
-    st.title("💬 Circle Copilot Chat")
+    st.title("💬 360Vestie")
 
     # Clear chat button
     if st.button("🧹 Clear Chat"):

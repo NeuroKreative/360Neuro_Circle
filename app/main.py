@@ -37,7 +37,10 @@ def format_message(role, content, timestamp):
 st.markdown(
     """
     <div style="text-align: center; margin-bottom: 20px;">
-    https://scontent-sea5-1.cdninstagram.com/v/t51.2885-19/499884850_17851448808452837_5907511648837705268_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-sea5-1.cdninstagram.com&_nc_cat=105&_nc_oc=Q6cZ2QFMHv8tL5wAx-HICaGgzuwsZESeKiRt7ICzcECrr6BlUDVmTZnNwOb4VacYZZ3S-cotijHnhpydVKBZMjASUaP-&_nc_ohc=aUJxnoGj04EQ7kNvwGXIB0a&_nc_gid=ke-u3wM63AG6za7hTXc7wQ&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_Afal6R0LWa5dgPOZK9izvZugAzwQrw-x9n2Bv4O_Etzrew&oe=68DB7BF4&_nc_sid=7a9f4b
+        https://www.360neurogo.com
+            https://www.360neurogo.com/wp-content/uploads/2021/03/360NeuroGO-Logo.png
+        </a>
+    </div>
     """,
     unsafe_allow_html=True
 )
@@ -62,7 +65,7 @@ if not st.session_state.logged_in:
 
 # --- Chat Interface ---
 else:
-    st.title("💬 360Vestie Chat")
+    st.title("💬 Circle Copilot Chat")
 
     # Clear chat button
     if st.button("🧹 Clear Chat"):
@@ -76,7 +79,7 @@ else:
             st.markdown(formatted)
 
     # Chat input
-    user_input = st.chat_input("Hi Im your 360Vestie, what would you like to know?")
+    user_input = st.chat_input("Ask something about the Circle community...")
     if user_input:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with st.chat_message("user"):
@@ -105,4 +108,23 @@ else:
                     st.markdown(f"- {url}")
 
             # 💡 Follow-up Suggestions (clickable)
-            suggestions
+            suggestions = suggest_followups(user_input, response)
+            if suggestions:
+                st.markdown("💡 **Follow-up Suggestions:**")
+                for s in suggestions:
+                    if st.button(s, key=s):
+                        followup_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        st.session_state.chat_history.append({"role": "user", "content": s, "timestamp": followup_timestamp})
+                        with st.chat_message("user"):
+                            st.markdown(format_message("user", s, followup_timestamp))
+                        with st.spinner("Thinking..."):
+                            followup_response = generate_response(s, context, system_prompt=system_prompt)
+                        followup_response_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        with st.chat_message("assistant"):
+                            st.markdown(format_message("assistant", followup_response, followup_response_timestamp))
+                        st.session_state.chat_history.append({"role": "assistant", "content": followup_response, "timestamp": followup_response_timestamp})
+
+        # Save to history
+        st.session_state.chat_history.append({"role": "user", "content": user_input, "timestamp": timestamp})
+        st.session_state.chat_history.append({"role": "assistant", "content": response, "timestamp": response_timestamp})
+

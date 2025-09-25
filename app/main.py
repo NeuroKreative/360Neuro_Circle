@@ -1,8 +1,6 @@
 import streamlit as st
-import subprocess
 from circle_scraper import scrape_circle
 from chat_model import generate_response
-
 # --- Streamlit UI ---
 st.set_page_config(page_title="Circle Copilot", layout="centered")
 st.title("🔐 Circle Copilot Chat")
@@ -17,12 +15,22 @@ with st.form("login_form"):
 if submitted and email and password and query:
     with st.spinner("Logging in and fetching content..."):
         try:
+            # Scrape Circle content using provided credentials
             raw_html = scrape_circle(email, password)
 
-            # Placeholder: Extract text from HTML (you’ll expand this later)
-            context = raw_html[:3000]  # Limit to avoid token overflow
+            # Extract and limit context to avoid token overflow
+            context = raw_html[:3000]
 
-            response = generate_response(query, context)
+            # Add system prompt to enforce Circle-only responses
+            system_prompt = (
+                "You are a Circle Copilot AI. You must only use information "
+                "retrieved from the Circle community. Do not use external sources. "
+                "If the answer is not available in the Circle content, respond with: "
+                "'I’m sorry, I can only provide information available within the Circle community.'"
+            )
+
+            # Generate response using Circle-only context
+            response = generate_response(query, context, system_prompt=system_prompt)
             st.success("✅ Here's what I found:")
             st.write(response)
 

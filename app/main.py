@@ -37,7 +37,7 @@ def format_message(role, content, timestamp):
 st.markdown(
     """
     https://www.360neurogo.com
-        https://www.360neurogo.com/wp-content/uploads/2022/03/360NeuroGO-Logo.png
+      https://www.canva.com/design/DAG0BryeJoQ/kZFm5saXjRTDDPgqCwFFtg/view?utm_content=DAG0BryeJoQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0cf72ab5ad
     </a>
     """,
     unsafe_allow_html=True

@@ -1,6 +1,7 @@
+''''
 import openai
 import os
-import streamlit as st
+
 # Load API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -42,5 +43,3 @@ def generate_response(prompt, context, system_prompt="You are a helpful assistan
     )
 
     return response.choices[0].message.content
-''''
-

@@ -42,5 +42,5 @@ def generate_response(prompt, context, system_prompt="You are a helpful assistan
     )
 
     return response.choices[0].message.content
-    ''
+''''
 

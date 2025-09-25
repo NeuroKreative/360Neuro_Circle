@@ -46,7 +46,7 @@ st.markdown(
 
 # --- Login Interface ---
 if not st.session_state.logged_in:
-    st.title("🔐 Circle Copilot Login")
+    st.title("🔐 360Vestie Login")
     st.markdown("Please log in to access your Circle community content.")
 
     email = st.text_input("Email")

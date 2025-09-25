@@ -2,24 +2,18 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
-def scrape_circle(email, password, max_pages=5):
+def scrape_circle(email, password, max_pages=30):  # Increased depth
     session = requests.Session()
 
     # Step 1: Log in to Circle
     login_url = "https://www.360neurogo.com/login"
     dashboard_url = "https://www.360neurogo.com/dashboard"
 
-    # Get login page to establish session
     session.get(login_url)
-
-    # Submit login form
-    payload = {
-        "email": email,
-        "password": password
-    }
+    payload = {"email": email, "password": password}
     session.post(login_url, data=payload)
 
-    # Step 2: Start from dashboard and collect links to explore
+    # Step 2: Crawl from dashboard
     visited_urls = set()
     to_visit = [dashboard_url]
     collected_text = []
@@ -35,22 +29,21 @@ def scrape_circle(email, password, max_pages=5):
 
             # Extract visible text
             page_text = soup.get_text(separator="\n", strip=True)
-            collected_text.append(page_text)
+            collected_text.append(f"--- {url} ---\n{page_text}")
             visited_urls.add(url)
 
-            # Find internal links to follow
+            # Find internal links
             for link in soup.find_all("a", href=True):
                 href = link["href"]
                 if href.startswith("/") and "logout" not in href:
-                    full_url = f"https://www.360neurogo.com{href}"
+                    full_url = f"https://www.360neurogo.com{href.split('?')[0]}"
                     if full_url not in visited_urls and full_url not in to_visit:
                         to_visit.append(full_url)
 
-            time.sleep(1)  # Be polite to the server
+            time.sleep(1)
 
         except Exception as e:
             print(f"Failed to scrape {url}: {e}")
 
     return "\n\n".join(collected_text)
-
 

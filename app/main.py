@@ -37,7 +37,7 @@ def format_message(role, content, timestamp):
 st.markdown(
     """
     <div style="text-align: center; margin-bottom: 20px;">
-                    https://scontent-sea5-1.cdninstagram.com/v/t51.2885-19/499884850_17851448808452837_5907511648837705268_n.jpg
+            <img src=https://scontent-sea5-1.cdninstagram.com/v/t51.2885-19/499884850_17851448808452837_5907511648837705268_n.jpg
         </a>
     </div>
     """,

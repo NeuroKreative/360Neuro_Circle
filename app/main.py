@@ -77,7 +77,7 @@ else:
             st.markdown(formatted)
 
     # Chat input
-    user_input = st.chat_input("Ask something about the Circle community...")
+    user_input = st.chat_input("Ask you 360Vestie...")
     if user_input:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with st.chat_message("user"):

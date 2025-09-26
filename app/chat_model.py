@@ -21,7 +21,7 @@ def generate_response(user_input, context, system_prompt=""):
     except openai.error.OpenAIError as e:
         return f"❌ Error generating response: {str(e)}"
 
-''''
+'''
 from openai import OpenAI
 import streamlit as st
 
